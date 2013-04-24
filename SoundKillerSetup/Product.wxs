@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Sound Killer" Language="1033" Version="1.0.0.0" Manufacturer="Alfie Kirkpatrick" UpgradeCode="41bc4622-57ee-4312-b660-3e34d73d28c6">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of SoundKiller is already installed." />
+		<MediaTemplate EmbedCab="yes"/>
+
+    <Feature Id="Everything" Title="Sound Killer" Display="expand">
+      <Feature Id="ProductFeature" Title="Application" Level="1">
+        <ComponentGroupRef Id="ProductComponents" />
+      </Feature>
+    </Feature>
+    
+    <InstallExecuteSequence>
+      <ScheduleReboot After="InstallFinalize"/>
+    </InstallExecuteSequence>
+
+    <UIRef Id="WixUI_Mondo" />
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="SoundKiller" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			 <Component Id="ProductComponent">
+         <File Source="$(var.AppMain.TargetPath)" />
+			 </Component>
+      <Component Id="LibComponent">
+        <File Source="$(var.CoreAudioApi.TargetPath)" />
+      </Component>
+      <Component Id="RegistryEntries">
+        <RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Run">
+          <RegistryValue Name="SoundKiller" Type="string" Value="[INSTALLFOLDER]SoundKiller.exe"/>
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+</Wix>
