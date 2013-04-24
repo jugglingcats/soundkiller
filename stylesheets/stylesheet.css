@@ -257,10 +257,12 @@ form {
   padding: 20px;
 }
 
+/*
 img {
   width: 100%;
   max-width: 100%;
 }
+*/
 
 /*******************************************************************************
 Full-Width Styles
@@ -323,7 +325,7 @@ Full-Width Styles
 
 #downloads {
   position: absolute;
-  width: 210px;
+  width: 315px;
   z-index: 10;
   bottom: -40px;
   right: 0;
@@ -348,8 +350,18 @@ Full-Width Styles
   height:70px;
   text-indent: -5000px;
   overflow: hidden;
-  background: url(../images/sprite_download.png) no-repeat bottom right;
+  background: url(../images/sprite_download.png) no-repeat bottom center;
   margin-left: 10px;
+}
+
+.msi_download_link {
+  display: block;
+  float: right;
+  width: 90px;
+  height:70px;
+  text-indent: -5000px;
+  overflow: hidden;
+  background: url(../images/sprite_download.png) no-repeat bottom right;
 }
 
 .zip_download_link:hover {
@@ -357,6 +369,10 @@ Full-Width Styles
 }
 
 .tar_download_link:hover {
+  background: url(../images/sprite_download.png) no-repeat top center;
+}
+
+.msi_download_link:hover {
   background: url(../images/sprite_download.png) no-repeat top right;
 }
 
