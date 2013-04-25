@@ -1,18 +1,77 @@
 <!DOCTYPE html>
 <html>
-
-  <head>
+<head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Soundkiller : Mute and restore sounds on Windows 7 when switching between logged in users" />
-
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <title>Sound Killer</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-40450226-1']);
+        _gaq.push(['_trackPageview']);
 
-    <title>Soundkiller</title>
-  </head>
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
 
-  <body>
+        if (typeof jQuery != 'undefined') {
+            jQuery(document).ready(function ($) {
+                var filetypes = /\.(zip|exe|dmg|pdf|doc.*|xls.*|ppt.*|mp3|txt|rar|wma|mov|avi|wmv|flv|wav)$/i
+                var baseHref = '';
+                if (jQuery('base').attr('href') != undefined) baseHref = jQuery('base').attr('href');
 
+                jQuery('a').on('click', function (event) {
+                    var el = jQuery(this);
+                    var track = true;
+                    var href = (typeof (el.attr('href')) != 'undefined') ? el.attr('href') : "";
+                    var isThisDomain = href.match(document.domain.split('.').reverse()[1] + '.' + document.domain.split('.').reverse()[0]);
+                    if (!href.match(/^javascript:/i)) {
+                        var elEv = []; elEv.value = 0, elEv.non_i = true;
+                        if (href.match(/^mailto\:/i)) {
+                            elEv.category = "email";
+                            elEv.action = "click";
+                            elEv.label = href.replace(/^mailto\:/i, '');
+                            elEv.loc = href;
+                        }
+                        else if (href.match(filetypes)) {
+                            var extension = (/[.]/.exec(href)) ? /[^.]+$/.exec(href) : undefined;
+                            elEv.category = "download";
+                            elEv.action = "click-" + extension[0];
+                            elEv.label = href.replace(/ /g, "-");
+                            elEv.loc = baseHref + href;
+                        }
+                        else if (href.match(/^https?\:/i) && !isThisDomain) {
+                            elEv.category = "external";
+                            elEv.action = "click";
+                            elEv.label = href.replace(/^https?\:\/\//i, '');
+                            elEv.loc = href;
+                        }
+                        else if (href.match(/^tel\:/i)) {
+                            elEv.category = "telephone";
+                            elEv.action = "click";
+                            elEv.label = href.replace(/^tel\:/i, '');
+                            elEv.loc = href;
+                        }
+                        else track = false;
+
+                        if (track) {
+                            _gaq.push(['_trackEvent', elEv.category.toLowerCase(), elEv.action.toLowerCase(), elEv.label.toLowerCase(), elEv.value, elEv.non_i]);
+                            if (el.attr('target') == undefined || el.attr('target').toLowerCase() != '_blank') {
+                                setTimeout(function () { location.href = elEv.loc; }, 400);
+                                return false;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</head>
+<body>
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
@@ -28,10 +87,9 @@
             </section>
         </header>
     </div>
-
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+        <section id="main_content" class="inner">
         <h3>Welcome to Sound Killer.</h3>
 
 <p>Does it annoy you when other users on your computer lock their account with music or other sounds still playing? If the answer is <strong>Yes!</strong>, then Sound Killer is 
@@ -70,7 +128,7 @@
 <input type="hidden" name="option_select2" value="Love it!!">
 <input type="hidden" name="option_amount2" value="10.00">
 <input type="hidden" name="option_index" value="0">
-<div style="float:right">
+<div style="float:right; background-color: #c0c0ff; padding: 16px 16px 16px 16px">
 How much do you like it?<br />
 <select name="os0">
 	<option value="It's okay">It's okay $2.00 USD</option>
@@ -79,26 +137,21 @@ How much do you like it?<br />
 </select>
 <br />
 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </div>
 <div>Sound Killer is free software and open source, but if you find it useful donations are welcome!</div>
 </form>
 
-<h3>Support or Contact</h3>
+<h3>Support</h3>
 
 <p>Having trouble with SoundKiller? <a href="https://github.com/jugglingcats/soundkiller/issues">Log an issue</a></p>
       </section>
     </div>
-
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-      <footer class="inner">
+        <footer class="inner">
         <p class="copyright">Soundkiller maintained by <a href="https://github.com/jugglingcats">jugglingcats</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-    
-
-  </body>
+</body>
 </html>
